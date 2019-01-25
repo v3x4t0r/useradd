@@ -3,7 +3,7 @@
 #list.txt must have the format user:password
 
 #add users to variable
-list=$(cat list.txt)
+file=$(cat list.txt)
 
 #Check if mkpasswd is installed (whois utils)
 mkpasswd=$(dpkg -l | grep whois)
@@ -21,6 +21,15 @@ fi
 
 #Add username and password to variables and add users with useradd
 #Uses sha512 encryption in /etc/shadow format
+
+> passlist.txt
+for i in $file;
+do
+	pass=$(dd if=/dev/urandom bs=1 count=5|base64 -w 0)
+	echo $i:$pass >> passlist.txt
+done
+
+list=$(cat passlist.txt)
 
 for line in $list; do
 	user=$(echo $line | awk -F ":" '{print $1}')
