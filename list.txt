@@ -1,0 +1,3 @@
+bob:pass
+kim:pass2
+olav:pass1
