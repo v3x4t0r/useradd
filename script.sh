@@ -53,6 +53,7 @@ for line in $list; do
 
 	else
 		echo $user "not added, already exitst"
+		sed -i "s/$pass/INVALID/" passlist.txt
 
 	fi
 done
