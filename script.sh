@@ -1,7 +1,16 @@
 #!/bin/bash
 #Script to add users to a debian system with a list of users
 
-#add users to variable
+#Check if running as root
+root=$(whoami)
+if [ root != $root ]
+then
+	echo "Needs to run with root privileges"
+	echo "sudo ./script.sh"
+	exit
+fi
+
+#add user list to variable
 file=$(cat list.txt)
 
 #Check if mkpasswd is installed (whois utils)
@@ -13,17 +22,15 @@ then
 	var=y
 	if [ $install = $var ]
 	then
-	sudo apt install whois
+	apt install whois
 	fi
-else	echo "Installed"
 fi
-
 
 #Generate random password that is added to passlist.txt
 > passlist.txt
 for i in $file;
 do
-	pass=$(dd if=/dev/urandom bs=1 count=8|base64 -w 0)
+	pass=$(dd if=/dev/urandom bs=1 count=8 status=none|base64 -w 0)
 	echo $i:$pass >> passlist.txt
 done
 
@@ -38,5 +45,6 @@ for line in $list; do
 	pass=$(echo $line | awk -F ":" '{print $2}')
 	crypt=$(mkpasswd -m sha-512 $pass)
 	useradd -m -U -p $crypt $user
-	passwd --expire $user
+	passwd --expire $user >/dev/null
+	echo "Added user: "$user
 done
