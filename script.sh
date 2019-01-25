@@ -1,5 +1,8 @@
 #!/bin/bash
 #Script to add users to a debian system with a list of users
+#List of random user password will be generated
+#User will not be added to passlist if already exists
+
 
 #Check if running as root
 root=$(whoami)
