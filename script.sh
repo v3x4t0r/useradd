@@ -18,15 +18,18 @@ then
 else	echo "Installed"
 fi
 
-#Add username and password to variables and add users with useradd
-#Uses sha512 encryption in /etc/shadow format
 
+#Generate random password that is added to passlist.txt
 > passlist.txt
 for i in $file;
 do
-	pass=$(dd if=/dev/urandom bs=1 count=5|base64 -w 0)
+	pass=$(dd if=/dev/urandom bs=1 count=8|base64 -w 0)
 	echo $i:$pass >> passlist.txt
 done
+
+
+#Add username and password to variables and add users with useradd
+#Uses sha512 encryption in /etc/shadow format
 
 list=$(cat passlist.txt)
 
