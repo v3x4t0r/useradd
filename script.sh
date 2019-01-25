@@ -1,6 +1,5 @@
 #!/bin/bash
 #Script to add users to a debian system with a list of users
-#list.txt must have the format user:password
 
 #add users to variable
 file=$(cat list.txt)
