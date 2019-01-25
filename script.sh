@@ -43,8 +43,16 @@ list=$(cat passlist.txt)
 for line in $list; do
 	user=$(echo $line | awk -F ":" '{print $1}')
 	pass=$(echo $line | awk -F ":" '{print $2}')
-	crypt=$(mkpasswd -m sha-512 $pass)
-	useradd -m -U -p $crypt $user
-	passwd --expire $user >/dev/null
-	echo "Added user: "$user
+	usercheck=$(cat /etc/passwd | grep $user)
+	if [ -z $usercheck ]
+	then
+                crypt=$(mkpasswd -m sha-512 $pass)
+                useradd -m -U -p $crypt $user
+                passwd --expire $user >/dev/null
+                echo "Added user: "$user
+
+	else
+		echo $user "not added, already exitst"
+
+	fi
 done
